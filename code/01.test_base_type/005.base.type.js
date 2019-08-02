@@ -47,6 +47,8 @@ x[1].toLowerCase();
         Color[Color["Green"] = 1] = "Green";
         Color[Color["Blue"] = 2] = "Blue";
     })(Color || (Color = {}));
+    /* 内部是这样的
+    { '0': 'Red', '1': 'Green', '2': 'Blue', Red: 0, Green: 1, Blue: 2 } */
     var c = Color.Green;
     console.log(c);
 }
@@ -84,4 +86,73 @@ noSure = false;
 var mutiple_list = [1, true, 'free'];
 mutiple_list[1] = true;
 // #endregion 任何 any Code Module End
+// -----------------------------------------分隔符--------------------------------------------
+// #region 空类型 void  Code Module
+/* 当函数没有任何返回值，可以使用void来进行声明 */
+function warnJWL() {
+    console.log('ilovejwl');
+}
+/* 声明一个 空类型的变量 */
+var unsable = undefined;
+var unsable2 = null;
+// #endregion 空类型 void  Code Module End
+// -----------------------------------------分隔符--------------------------------------------
+// #region null 和 undefined Code Module
+/* 和 void相似，但是用处不大 */
+{
+    var u = undefined;
+    var n = null;
+    console.log(u, n);
+}
+/* 这两个类型是所有类型的子类型，子类型可以赋值给父类型 */
+{
+    var u2 = undefined;
+    var n2 = null;
+    console.log(u2, n2);
+}
+/* 联合类型 */
+{
+    var u3 = undefined;
+    var n3 = null;
+    console.log(u3, n3);
+}
+// #endregion null 和 undefined Code Module End
+// -----------------------------------------分隔符--------------------------------------------
+// #region 不安全类型 never Code Module
+/* 无法到达的终点 包含 抛出异常、不会有返回值 函数表达式或箭头函数 */
+function error(message) {
+    throw new Error(message);
+}
+/* 推荐出返回的数据类型为 never */
+function fail() {
+    return error('一直失败。');
+}
+/* 返回never 的函数必须 无法到达终点 */
+function infiniteLoop() {
+    /* 死循环 就无法到达终点 */
+    while (true) { }
+}
+create({ prop: 0 });
+create(null);
+// create(20); // 不行
+// #endregion 非原始类型 object Code Module End
+// -----------------------------------------分隔符--------------------------------------------
+// #region 类型断言 Code Module
+/* ========================================================================================= */
+/* 编译阶段的类型转换，当你清楚准确的数据类型时，可以这样转换，实际上并没有真正的转换，只是针对编译器 */
+/* ========================================================================================= */
+/* 第一种方式：尖括号语法 */
+{
+    var some_value = 'ilovejwl';
+    var some_lengeh = some_value.length;
+    console.log(some_lengeh);
+}
+/* 第二种方式：as语法 */
+/* as 语法 可读性更好 */
+{
+    var some_value = 'ilovejwl';
+    var str_length = some_value.length;
+    console.log(str_length);
+}
+// #endregion 类型断言 Code Module End
 // -----------------------------------------分隔符--------------------------------------------

@@ -72,7 +72,8 @@ x[1].toLowerCase();
 		Green,
 		Blue,
 	}
-
+	/* 内部是这样的
+	{ '0': 'Red', '1': 'Green', '2': 'Blue', Red: 0, Green: 1, Blue: 2 } */
 	let c: Color = Color.Green;
 	console.log(c);
 }
@@ -135,8 +136,28 @@ let unsable2: void = null;
 // #region null 和 undefined Code Module
 
 /* 和 void相似，但是用处不大 */
-let u: undefined = undefined;
-let n: null = null;
+{
+	let u: undefined = undefined;
+	let n: null = null;
+
+	console.log(u, n);
+}
+
+/* 这两个类型是所有类型的子类型，子类型可以赋值给父类型 */
+{
+	let u2: null = undefined;
+	let n2: undefined = null;
+
+	console.log(u2, n2);
+}
+
+/* 联合类型 */
+{
+	let u3: null | undefined = undefined;
+	let n3: undefined | null = null;
+
+	console.log(u3, n3);
+}
 
 // #endregion null 和 undefined Code Module End
 
