@@ -3,11 +3,12 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 22:33:46
- * @LastEditTime: 2019-09-18 14:17:40
+ * @LastEditTime: 2019-09-18 15:28:59
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from './types/index';
 import { parseHeaders } from './helpers/header';
+import { createError } from './helpers/error';
 
 /**
  * @description	XMLHttpRequest对象
@@ -19,7 +20,7 @@ import { parseHeaders } from './helpers/header';
  */
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
-    const { data = null, url, method = 'get', headers, responseType } = config;
+    const { data = null, url, method = 'get', headers, responseType, timeout } = config;
 
     const request = new XMLHttpRequest();
 
@@ -27,10 +28,18 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       request.responseType = responseType;
     }
 
+    if (timeout) {
+      request.timeout = timeout;
+    }
+
     request.open(method.toLowerCase(), url, true);
 
     request.onreadystatechange = function handleLoad() {
       if (request.readyState !== 4) {
+        return;
+      }
+
+      if (request.status === 0) {
         return;
       }
 
@@ -45,7 +54,20 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         config,
         request
       };
-      resolve(response);
+      // resolve(response);
+      handleResponse(response);
+    };
+
+    request.onerror = function handleError() {
+      // reject(new Error('Network Error.'));
+      reject(createError('Network Error.', config, null, request));
+    };
+
+    request.ontimeout = function handleTimeout() {
+      // reject(new Error(`Timeout of ${timeout} ms exceeded.`));
+      reject(
+        createError(`Timeout of ${timeout} ms exceeded.`, config, 'ECONNABORTED(连接中断)', request)
+      );
     };
 
     Object.keys(headers).forEach(name => {
@@ -57,5 +79,28 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     });
 
     request.send(data);
+
+    /**
+     * @description	响应时的一些处理
+     * @author ilovejwl
+     * @date 2019-09-18
+     * @param {AxiosResponse} response
+     */
+    function handleResponse(response: AxiosResponse) {
+      if (response.status >= 200 && response.status < 300) {
+        resolve(response);
+      } else {
+        // reject(new Error(`Request failed with status code ${response.status}`));
+        reject(
+          createError(
+            `Request failed with status code ${response.status}`,
+            config,
+            null,
+            request,
+            response
+          )
+        );
+      }
+    }
   });
 }

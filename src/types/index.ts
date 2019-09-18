@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 22:19:20
- * @LastEditTime: 2019-09-18 12:13:47
+ * @LastEditTime: 2019-09-18 15:08:50
  * @LastEditors: ilovejwl
  */
 export type Method =
@@ -36,6 +36,7 @@ export interface AxiosRequestConfig {
   params?: any;
   headers?: any;
   responseType?: XMLHttpRequestResponseType;
+  timeout?: number;
 }
 
 /**
@@ -55,3 +56,11 @@ export interface AxiosResponse {
 }
 
 export interface AxiosPromise extends Promise<AxiosResponse> {}
+
+export interface AxiosError extends Error {
+  config: AxiosRequestConfig;
+  code?: string;
+  request?: any;
+  response?: AxiosResponse;
+  isAxiosError: boolean;
+}
