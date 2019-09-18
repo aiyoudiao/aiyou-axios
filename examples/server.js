@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 23:11:03
- * @LastEditTime: 2019-09-18 14:55:19
+ * @LastEditTime: 2019-09-18 17:19:51
  * @LastEditors: ilovejwl
  */
 const express = require ('express');
@@ -79,6 +79,47 @@ router.get ('/error/timeout', function (req, res) {
       msg: `hello world`,
     });
   }, 3000);
+});
+
+router.get ('/extend/get', function (req, res) {
+  res.json ({
+    msg: 'hello world',
+  });
+});
+
+router.options ('/extend/options', function (req, res) {
+  res.end ();
+});
+
+router.delete ('/extend/delete', function (req, res) {
+  res.end ();
+});
+
+router.head ('/extend/head', function (req, res) {
+  res.end ();
+});
+
+router.post ('/extend/post', function (req, res) {
+  res.json (req.body);
+});
+
+router.put ('/extend/put', function (req, res) {
+  res.json (req.body);
+});
+
+router.patch ('/extend/patch', function (req, res) {
+  res.json (req.body);
+});
+
+router.get ('/extend/user', function (req, res) {
+  res.json ({
+    code: 0,
+    message: 'ok',
+    result: {
+      name: 'jack',
+      age: 18,
+    },
+  });
 });
 
 app.use (router);

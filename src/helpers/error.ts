@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-18 15:12:19
- * @LastEditTime: 2019-09-18 15:24:08
+ * @LastEditTime: 2019-09-18 15:58:53
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig, AxiosResponse } from '../types/index';
@@ -28,7 +28,7 @@ export class AxiosError extends Error {
     this.code = code;
     this.request = request;
     this.response = response;
-    this.isAxiosError = this.isAxiosError;
+    this.isAxiosError = true;
 
     /**
      * NOTE `处理TypeScript继承一些内置对象时的坑`

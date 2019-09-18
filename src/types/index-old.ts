@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 22:19:20
- * @LastEditTime: 2019-09-18 18:28:56
+ * @LastEditTime: 2019-09-18 18:09:53
  * @LastEditors: ilovejwl
  */
 export type Method =
@@ -45,10 +45,9 @@ export interface AxiosRequestConfig {
  * @date 2019-09-18
  * @export
  * @interface AxiosResponse
- * @template T
  */
-export interface AxiosResponse<T = any> {
-  data: T;
+export interface AxiosResponse {
+  data: any;
   status: number;
   statusText: string;
   headers: any;
@@ -62,10 +61,9 @@ export interface AxiosResponse<T = any> {
  * @date 2019-09-18
  * @export
  * @interface AxiosPromise
- * @extends {Promise<AxiosResponse<T>>}
- * @template T
+ * @extends {Promise<AxiosResponse>}
  */
-export interface AxiosPromise<T = any> extends Promise<AxiosResponse<T>> {}
+export interface AxiosPromise extends Promise<AxiosResponse> {}
 
 /**
  * @description	Axios的Error规范接口
@@ -91,21 +89,21 @@ export interface AxiosError extends Error {
  * @interface Axios
  */
 export interface Axios {
-  request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>;
+  request(config: AxiosRequestConfig): AxiosPromise;
 
-  get<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
+  get(url: string, config?: AxiosRequestConfig): AxiosPromise;
 
-  delete<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
+  delete(url: string, config?: AxiosRequestConfig): AxiosPromise;
 
-  head<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
+  head(url: string, config?: AxiosRequestConfig): AxiosPromise;
 
-  options<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
+  options(url: string, config?: AxiosRequestConfig): AxiosPromise;
 
-  post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>;
+  post(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise;
 
-  put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>;
+  put(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise;
 
-  patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>;
+  patch(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise;
 }
 
 /**
@@ -117,7 +115,7 @@ export interface Axios {
  * @extends {Axios}
  */
 export interface AxiosInstance extends Axios {
-  <T = any>(config: AxiosRequestConfig): AxiosPromise<T>;
+  (config: AxiosRequestConfig): AxiosPromise;
 
-  <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
+  (url: string, config?: AxiosRequestConfig): AxiosPromise;
 }

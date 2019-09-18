@@ -3,12 +3,12 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 22:33:46
- * @LastEditTime: 2019-09-18 15:28:59
+ * @LastEditTime: 2019-09-18 17:20:59
  * @LastEditors: ilovejwl
  */
-import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from './types/index';
-import { parseHeaders } from './helpers/header';
-import { createError } from './helpers/error';
+import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types/index';
+import { parseHeaders } from '../helpers/header';
+import { createError } from '../helpers/error';
 
 /**
  * @description	XMLHttpRequest对象
