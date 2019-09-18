@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: ilovejwl
+ * @version: 1.0.0
+ * @Author: ilovejwl
+ * @Date: 2019-08-02 17:11:22
+ * @LastEditTime: 2019-08-02 17:11:22
+ * @LastEditors: ilovejwl
+ */
 /**
  * 接口可以继承多个接口
  */
@@ -10,7 +18,7 @@
  * @interface Shape
  */
 interface Shape {
-	color: string;
+  color: string;
 }
 
 /**
@@ -19,7 +27,7 @@ interface Shape {
  * @interface PenStroke
  */
 interface PenStroke {
-	penWidth: number;
+  penWidth: number;
 }
 
 /**
@@ -30,7 +38,7 @@ interface PenStroke {
  * @extends {PenStroke} 继承绘笔接口
  */
 interface Square extends Shape, PenStroke {
-	sideLength: number;
+  sideLength: number;
 }
 
 /* 类型断言(类型转换) */

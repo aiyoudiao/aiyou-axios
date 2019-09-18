@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: ilovejwl
+ * @version: 1.0.0
+ * @Author: ilovejwl
+ * @Date: 2019-07-24 11:24:09
+ * @LastEditTime: 2019-09-12 21:08:53
+ * @LastEditors: ilovejwl
+ */
 // @ts-check
 
 // #region 布尔值 Boolean Code Module
@@ -20,7 +28,7 @@ let octalLiteral: number = 0o24;
 /* 十进制值 */
 let decLiteral: number = 20;
 
-/* 十六禁值 */
+/* 十六进制值 */
 let hexLiteral: number = 0x14;
 
 // #endregion 数字 Number Code Module End
@@ -66,37 +74,37 @@ x[1].toLowerCase();
 
 // #region 枚举 enum Code Module
 {
-	/* 取枚举默认值，从0开始 */
-	enum Color {
-		Red,
-		Green,
-		Blue,
-	}
-	/* 内部是这样的
+  /* 取枚举默认值，从0开始 */
+  enum Color {
+    Red,
+    Green,
+    Blue
+  }
+  /* 内部是这样的
 	{ '0': 'Red', '1': 'Green', '2': 'Blue', Red: 0, Green: 1, Blue: 2 } */
-	let c: Color = Color.Green;
-	console.log(c);
+  let c: Color = Color.Green;
+  console.log(c);
 }
 {
-	/* 手动设置 值从1开始，默认清空下后面的值依次递增+1*/
-	enum Color {
-		Red = 1,
-		Green,
-		Blue,
-		Puple,
-	}
-	let c: Color = Color.Green;
-	console.log(c);
+  /* 手动设置 值从1开始，默认清空下后面的值依次递增+1*/
+  enum Color {
+    Red = 1,
+    Green,
+    Blue,
+    Puple
+  }
+  let c: Color = Color.Green;
+  console.log(c);
 }
 {
-	/* 手动设置 所有值重新设置 */
-	enum Color {
-		Red = 1,
-		Green = 2,
-		Blue = 4,
-	}
-	let c: Color = Color.Green;
-	console.log(c);
+  /* 手动设置 所有值重新设置 */
+  enum Color {
+    Red = 1,
+    Green = 2,
+    Blue = 4
+  }
+  let c: Color = Color.Green;
+  console.log(c);
 }
 
 // #endregion 枚举 enum Code Module End
@@ -122,7 +130,7 @@ mutiple_list[1] = true;
 
 /* 当函数没有任何返回值，可以使用void来进行声明 */
 function warnJWL(): void {
-	console.log('ilovejwl');
+  console.log('ilovejwl');
 }
 
 /* 声明一个 空类型的变量 */
@@ -137,26 +145,26 @@ let unsable2: void = null;
 
 /* 和 void相似，但是用处不大 */
 {
-	let u: undefined = undefined;
-	let n: null = null;
+  let u: undefined = undefined;
+  let n: null = null;
 
-	console.log(u, n);
+  console.log(u, n);
 }
 
 /* 这两个类型是所有类型的子类型，子类型可以赋值给父类型 */
 {
-	let u2: null = undefined;
-	let n2: undefined = null;
+  let u2: null = undefined;
+  let n2: undefined = null;
 
-	console.log(u2, n2);
+  console.log(u2, n2);
 }
 
 /* 联合类型 */
 {
-	let u3: null | undefined = undefined;
-	let n3: undefined | null = null;
+  let u3: null | undefined = undefined;
+  let n3: undefined | null = null;
 
-	console.log(u3, n3);
+  console.log(u3, n3);
 }
 
 // #endregion null 和 undefined Code Module End
@@ -167,18 +175,18 @@ let unsable2: void = null;
 
 /* 无法到达的终点 包含 抛出异常、不会有返回值 函数表达式或箭头函数 */
 function error(message: string): never {
-	throw new Error(message);
+  throw new Error(message);
 }
 
 /* 推荐出返回的数据类型为 never */
 function fail() {
-	return error('一直失败。');
+  return error('一直失败。');
 }
 
 /* 返回never 的函数必须 无法到达终点 */
 function infiniteLoop(): never {
-	/* 死循环 就无法到达终点 */
-	while (true) {}
+  /* 死循环 就无法到达终点 */
+  while (true) {}
 }
 
 // #endregion 不安全类型 never Code Module End
@@ -206,17 +214,17 @@ create(null);
 
 /* 第一种方式：尖括号语法 */
 {
-	let some_value: any = 'ilovejwl';
-	let some_lengeh: number = (<string>some_value).length;
-	console.log(some_lengeh);
+  let some_value: any = 'ilovejwl';
+  let some_lengeh: number = (some_value as string).length;
+  console.log(some_lengeh);
 }
 
 /* 第二种方式：as语法 */
 /* as 语法 可读性更好 */
 {
-	let some_value: any = 'ilovejwl';
-	let str_length: number = (some_value as string).length;
-	console.log(str_length);
+  let some_value: any = 'ilovejwl';
+  let str_length: number = (some_value as string).length;
+  console.log(str_length);
 }
 
 // #endregion 类型断言 Code Module End

@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: ilovejwl
+ * @version: 1.0.0
+ * @Author: ilovejwl
+ * @Date: 2019-08-07 14:50:34
+ * @LastEditTime: 2019-08-12 21:01:18
+ * @LastEditors: ilovejwl
+ */
 /**
  * typescript 的好处：
  *  编译阶段可以察觉出代码的问题，运行还是运行js
@@ -10,40 +18,40 @@
 
 // #region 交叉类型 Code Module
 {
-	function extend<T, U>(first: T, secord: U): T & U {
-		let result = {} as T & U;
+  function extend<T, U>(first: T, secord: U): T & U {
+    let result = {} as T & U;
 
-		for (let id in first) {
-			result[id] = first[id] as any;
-		}
+    for (let id in first) {
+      result[id] = first[id] as any;
+    }
 
-		for (let id in secord) {
-			if (!result.hasOwnProperty(id)) {
-				result[id] = secord[id] as any;
-			}
-		}
+    for (let id in secord) {
+      if (!result.hasOwnProperty(id)) {
+        result[id] = secord[id] as any;
+      }
+    }
 
-		return result;
-	}
+    return result;
+  }
 
-	class Person {
-		constructor(public name: string) {}
-	}
+  class Person {
+    constructor(public name: string) {}
+  }
 
-	interface Loggable {
-		log(): void;
-	}
+  interface Loggable {
+    log(): void;
+  }
 
-	class ConsoleLogger implements Loggable {
-		log() {
-			// ...
-		}
-	}
+  class ConsoleLogger implements Loggable {
+    log() {
+      // ...
+    }
+  }
 
-	/* jim 拥有两个类型的属性和方法，所以这个jim就是交叉类型 */
-	var jim = extend(new Person('jim'), new ConsoleLogger());
-	console.log(jim.name);
-	console.log(jim.log());
+  /* jim 拥有两个类型的属性和方法，所以这个jim就是交叉类型 */
+  let jim = extend(new Person('jim'), new ConsoleLogger());
+  console.log(jim.name);
+  console.log(jim.log());
 }
 // #endregion 交叉类型 Code Module End
 
