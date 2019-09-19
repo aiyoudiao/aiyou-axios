@@ -5,7 +5,7 @@ import InterceptorManager from '../core/InterceptorManager';
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 22:19:20
- * @LastEditTime: 2019-09-19 14:36:59
+ * @LastEditTime: 2019-09-19 15:31:23
  * @LastEditors: ilovejwl
  */
 export type Method =
@@ -41,6 +41,20 @@ export interface AxiosRequestConfig {
   timeout?: number;
 
   [propName: string]: any;
+
+  transformRequest?: AxiosTransformer | AxiosTransformer[];
+  transformResponse?: AxiosTransformer | AxiosTransformer[];
+}
+
+/**
+ * @description	Axios 转换器接口
+ * @author ilovejwl
+ * @date 2019-09-19
+ * @export
+ * @interface AxiosTransformer
+ */
+export interface AxiosTransformer {
+  (data: any, headers?: any): any;
 }
 
 /**

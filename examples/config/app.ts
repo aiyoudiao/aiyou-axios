@@ -3,14 +3,15 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-19 13:59:23
- * @LastEditTime: 2019-09-19 14:16:17
+ * @LastEditTime: 2019-09-19 15:31:47
  * @LastEditors: ilovejwl
  */
-import axios from '../../src/index';
+import axios, { AxiosTransformer } from '../../src/index';
 import qs from 'qs';
 
 axios.defaults.headers.common['test2'] = 123;
 
+// tslint:disable-next-line: no-floating-promises
 axios({
   url: '/config/post',
   method: 'post',
@@ -35,9 +36,36 @@ console.log({
   }
 });
 
+// tslint:disable-next-line: no-floating-promises
 axios({
   url: '/config/get',
   method: 'post'
+}).then(res => {
+  console.log(res.data);
+});
+
+// tslint:disable-next-line: no-floating-promises
+axios({
+  transformRequest: [
+    function(data) {
+      return qs.stringify(data);
+    },
+    ...(axios.defaults.transformRequest as AxiosTransformer[])
+  ],
+  transformResponse: [
+    ...(axios.defaults.transformResponse as AxiosTransformer[]),
+    function(data) {
+      if (typeof data === 'object') {
+        data.b = 2;
+      }
+      return data;
+    }
+  ],
+  url: '/config/post',
+  method: 'post',
+  data: {
+    a: 1
+  }
 }).then(res => {
   console.log(res.data);
 });

@@ -3,10 +3,12 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-19 11:11:44
- * @LastEditTime: 2019-09-19 14:25:32
+ * @LastEditTime: 2019-09-19 15:13:29
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig } from './types/index';
+import { processHeaders } from './helpers/header';
+import { transformRequest, transformResponse } from './helpers/data';
 
 const defaults: AxiosRequestConfig = {
   url: 'test',
@@ -16,7 +18,20 @@ const defaults: AxiosRequestConfig = {
     common: {
       Accept: 'application/json, text/plain, */*'
     }
-  }
+  },
+
+  transformRequest: [
+    function(data: any, headers: any): any {
+      processHeaders(headers, data);
+      return transformRequest(data);
+    }
+  ],
+
+  transformResponse: [
+    function(data: any): any {
+      return transformResponse(data);
+    }
+  ]
 };
 
 const methodsNoData = ['delete', 'get', 'head', 'options'];

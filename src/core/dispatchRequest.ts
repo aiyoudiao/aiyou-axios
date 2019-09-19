@@ -1,9 +1,9 @@
 /*
- * @Descripttion: ilovejwl
+ * @Descripttion: 发送请求的 文件
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-18 16:27:53
- * @LastEditTime: 2019-09-19 14:29:23
+ * @LastEditTime: 2019-09-19 15:24:50
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types/index';
@@ -11,6 +11,7 @@ import xhr from './xhr';
 import { buildURL } from '../helpers/url';
 import { transformRequest, transformResponse } from '../helpers/data';
 import { processHeaders, flattenHeaders } from '../helpers/header';
+import transform from './transform';
 
 /**
  * @description	请求的调度
@@ -35,8 +36,9 @@ export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromis
  */
 function processConfig(config: AxiosRequestConfig): void {
   config.url = transformUrl(config);
-  config.headers = transfromHeaders(config);
-  config.data = transformRequestData(config);
+  // config.headers = transfromHeaders(config);
+  // config.data = transformRequestData(config);
+  config.data = transform(config.data, config.headers, config.transformRequest);
   config.headers = flattenHeaders(config.headers, config.method!);
 }
 
@@ -83,6 +85,7 @@ function transfromHeaders(config: AxiosRequestConfig): any {
  * @returns {AxiosResponse}
  */
 function transformResponseData(res: AxiosResponse): AxiosResponse {
-  res.data = transformResponse(res.data);
+  // res.data = transformResponse(res.data);
+  res.data = transform(res.data, res.headers, res.config.transformResponse);
   return res;
 }
