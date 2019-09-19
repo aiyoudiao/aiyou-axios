@@ -3,11 +3,36 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-18 16:27:18
- * @LastEditTime: 2019-09-18 18:14:23
+ * @LastEditTime: 2019-09-19 10:20:28
  * @LastEditors: ilovejwl
  */
-import { AxiosRequestConfig, AxiosPromise, Axios as IAxios, Method } from '../types/index';
+import {
+  AxiosRequestConfig,
+  AxiosPromise,
+  Axios as IAxios,
+  Method,
+  AxiosResponse,
+  ResolvedFn,
+  RejectedFn
+} from '../types/index';
 import dispatchRequest from './dispatchRequest';
+import InterceptorManager from './InterceptorManager';
+
+/**
+ * @description	拦截器集 接口
+ * @author ilovejwl
+ * @date 2019-09-19
+ * @interface Interceptors
+ */
+interface Interceptors {
+  request: InterceptorManager<AxiosRequestConfig>;
+  response: InterceptorManager<AxiosResponse>;
+}
+
+interface PromiseChain {
+  resolved: ResolvedFn | ((config: AxiosRequestConfig) => AxiosPromise);
+  rejected?: RejectedFn;
+}
 
 /**
  * @description	Axios接口的实现类
@@ -18,6 +43,15 @@ import dispatchRequest from './dispatchRequest';
  * @implements {IAxios}
  */
 export default class Axios implements IAxios {
+  interceptors: Interceptors;
+
+  constructor() {
+    this.interceptors = {
+      request: new InterceptorManager<AxiosRequestConfig>(),
+      response: new InterceptorManager<AxiosResponse>()
+    };
+  }
+
   // /**
   //  * @description	请求的方法
   //  * @author ilovejwl
@@ -27,6 +61,28 @@ export default class Axios implements IAxios {
   //  * @memberof Axios
   //  */
   // request(config: AxiosRequestConfig): AxiosPromise {
+  //   return dispatchRequest(config);
+  // }
+
+  // /**
+  //  * @description	请求的方法
+  //  * @author ilovejwl
+  //  * @date 2019-09-18
+  //  * @param {*} url
+  //  * @param {*} [config]
+  //  * @returns {AxiosPromise}
+  //  * @memberof Axios
+  //  */
+  // request(url: any, config?: any): AxiosPromise {
+  //   if (typeof url === 'string') {
+  //     if (!config) {
+  //       config = {};
+  //     }
+  //     config.url = url;
+  //   } else {
+  //     config = url;
+  //   }
+
   //   return dispatchRequest(config);
   // }
 
@@ -49,7 +105,29 @@ export default class Axios implements IAxios {
       config = url;
     }
 
-    return dispatchRequest(config);
+    const chain: PromiseChain[] = [
+      {
+        resolved: dispatchRequest,
+        rejected: undefined
+      }
+    ];
+
+    this.interceptors.request.forEach(interceptor => {
+      chain.unshift(interceptor);
+    });
+
+    this.interceptors.response.forEach(interceptor => {
+      chain.push(interceptor);
+    });
+
+    let promise = Promise.resolve(config);
+
+    while (chain.length) {
+      const { resolved, rejected } = chain.shift()!;
+      promise = promise.then(resolved, rejected);
+    }
+
+    return promise;
   }
 
   /**

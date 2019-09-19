@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 22:19:20
- * @LastEditTime: 2019-09-18 18:28:56
+ * @LastEditTime: 2019-09-18 18:59:08
  * @LastEditors: ilovejwl
  */
 export type Method =
@@ -120,4 +120,39 @@ export interface AxiosInstance extends Axios {
   <T = any>(config: AxiosRequestConfig): AxiosPromise<T>;
 
   <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
+}
+
+/**
+ * @description	Axios 拦截器管理接口
+ * @author ilovejwl
+ * @date 2019-09-18
+ * @export
+ * @interface AxiosInterceptorManager
+ * @template T
+ */
+export interface AxiosInterceptorManager<T> {
+  use(resolved: ResolvedFn<T>, rejected?: RejectedFn): number;
+}
+
+/**
+ * @description	resolve函数的接口
+ * @author ilovejwl
+ * @date 2019-09-18
+ * @export
+ * @interface ResolvedFn
+ * @template T
+ */
+export interface ResolvedFn<T = any> {
+  (val: T): T | Promise<T>;
+}
+
+/**
+ * @description	reject函数接口
+ * @author ilovejwl
+ * @date 2019-09-18
+ * @export
+ * @interface RejectedFn
+ */
+export interface RejectedFn {
+  (error: any): any;
 }
