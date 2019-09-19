@@ -3,14 +3,14 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-18 16:27:53
- * @LastEditTime: 2019-09-18 16:50:39
+ * @LastEditTime: 2019-09-19 14:29:23
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types/index';
 import xhr from './xhr';
 import { buildURL } from '../helpers/url';
 import { transformRequest, transformResponse } from '../helpers/data';
-import { processHeaders } from '../helpers/header';
+import { processHeaders, flattenHeaders } from '../helpers/header';
 
 /**
  * @description	请求的调度
@@ -37,6 +37,7 @@ function processConfig(config: AxiosRequestConfig): void {
   config.url = transformUrl(config);
   config.headers = transfromHeaders(config);
   config.data = transformRequestData(config);
+  config.headers = flattenHeaders(config.headers, config.method!);
 }
 
 /**
@@ -48,7 +49,7 @@ function processConfig(config: AxiosRequestConfig): void {
  */
 function transformUrl(config: AxiosRequestConfig): string {
   const { url, params } = config;
-  return buildURL(url, params);
+  return buildURL(url!, params);
 }
 
 /**

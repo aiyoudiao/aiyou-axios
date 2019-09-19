@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-18 16:27:18
- * @LastEditTime: 2019-09-19 10:20:28
+ * @LastEditTime: 2019-09-19 14:42:48
  * @LastEditors: ilovejwl
  */
 import {
@@ -12,27 +12,12 @@ import {
   Axios as IAxios,
   Method,
   AxiosResponse,
-  ResolvedFn,
-  RejectedFn
+  Interceptors,
+  PromiseChain
 } from '../types/index';
 import dispatchRequest from './dispatchRequest';
 import InterceptorManager from './InterceptorManager';
-
-/**
- * @description	拦截器集 接口
- * @author ilovejwl
- * @date 2019-09-19
- * @interface Interceptors
- */
-interface Interceptors {
-  request: InterceptorManager<AxiosRequestConfig>;
-  response: InterceptorManager<AxiosResponse>;
-}
-
-interface PromiseChain {
-  resolved: ResolvedFn | ((config: AxiosRequestConfig) => AxiosPromise);
-  rejected?: RejectedFn;
-}
+import mergeConfig from './mergeConfig';
 
 /**
  * @description	Axios接口的实现类
@@ -43,9 +28,11 @@ interface PromiseChain {
  * @implements {IAxios}
  */
 export default class Axios implements IAxios {
+  defaults: AxiosRequestConfig;
   interceptors: Interceptors;
 
-  constructor() {
+  constructor(initConfig: AxiosRequestConfig) {
+    this.defaults = initConfig;
     this.interceptors = {
       request: new InterceptorManager<AxiosRequestConfig>(),
       response: new InterceptorManager<AxiosResponse>()
@@ -104,6 +91,8 @@ export default class Axios implements IAxios {
     } else {
       config = url;
     }
+
+    config = mergeConfig(this.defaults, config);
 
     const chain: PromiseChain[] = [
       {

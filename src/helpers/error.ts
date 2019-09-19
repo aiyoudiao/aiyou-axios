@@ -1,5 +1,5 @@
 /*
- * @Descripttion: ilovejwl
+ * @Descripttion: 规范Axios错误的 文件
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-18 15:12:19

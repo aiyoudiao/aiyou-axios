@@ -1,9 +1,11 @@
+import InterceptorManager from '../core/InterceptorManager';
+
 /*
  * @Descripttion: 存放一些接口规格的 文件
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 22:19:20
- * @LastEditTime: 2019-09-18 18:59:08
+ * @LastEditTime: 2019-09-19 14:36:59
  * @LastEditors: ilovejwl
  */
 export type Method =
@@ -37,6 +39,8 @@ export interface AxiosRequestConfig {
   headers?: any;
   responseType?: XMLHttpRequestResponseType;
   timeout?: number;
+
+  [propName: string]: any;
 }
 
 /**
@@ -91,6 +95,9 @@ export interface AxiosError extends Error {
  * @interface Axios
  */
 export interface Axios {
+  defaults: AxiosRequestConfig;
+  interceptors: Interceptors;
+
   request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>;
 
   get<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
@@ -155,4 +162,26 @@ export interface ResolvedFn<T = any> {
  */
 export interface RejectedFn {
   (error: any): any;
+}
+
+/**
+ * @description	拦截器集 接口
+ * @author ilovejwl
+ * @date 2019-09-19
+ * @interface Interceptors
+ */
+export interface Interceptors {
+  request: InterceptorManager<AxiosRequestConfig>;
+  response: InterceptorManager<AxiosResponse>;
+}
+
+/**
+ * @description	Promise 链接口
+ * @author ilovejwl
+ * @date 2019-09-19
+ * @interface PromiseChain
+ */
+export interface PromiseChain {
+  resolved: ResolvedFn | ((config: AxiosRequestConfig) => AxiosPromise);
+  rejected?: RejectedFn;
 }

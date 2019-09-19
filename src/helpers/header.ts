@@ -3,10 +3,11 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-18 10:41:55
- * @LastEditTime: 2019-09-18 14:16:05
+ * @LastEditTime: 2019-09-19 13:54:34
  * @LastEditors: ilovejwl
  */
-import { isPlainObject } from './util';
+import { isPlainObject, deepMerge } from './util';
+import { Method } from '../types';
 
 /**
  * @description	规范headers中的键值对命名
@@ -77,4 +78,29 @@ export function parseHeaders(headers: string): any {
   });
 
   return parsed;
+}
+
+/**
+ * @description	平级化headers
+ * @author ilovejwl
+ * @date 2019-09-19
+ * @export
+ * @param {*} headers
+ * @param {Method} method
+ * @returns {*}
+ */
+export function flattenHeaders(headers: any, method: Method): any {
+  if (!headers) {
+    return headers;
+  }
+
+  headers = deepMerge(headers.common, headers[method], headers);
+
+  const methodsToDelete = ['delete', 'get', 'head', 'options', 'post', 'put', 'patch', 'common'];
+
+  methodsToDelete.forEach(method => {
+    delete headers[method];
+  });
+
+  return headers;
 }

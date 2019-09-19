@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 23:11:03
- * @LastEditTime: 2019-09-18 17:19:51
+ * @LastEditTime: 2019-09-19 14:17:17
  * @LastEditors: ilovejwl
  */
 const express = require ('express');
@@ -124,6 +124,10 @@ router.get ('/extend/user', function (req, res) {
 
 router.get ('/interceptor/get', function (req, res) {
   res.end ('hello');
+});
+
+router.post ('/config/post', function (req, res) {
+  res.json (req.body);
 });
 
 app.use (router);

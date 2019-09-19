@@ -3,12 +3,13 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-08-12 07:12:11
- * @LastEditTime: 2019-09-18 17:13:57
+ * @LastEditTime: 2019-09-19 11:57:15
  * @LastEditors: ilovejwl
  */
-import { AxiosInstance } from './types';
+import { AxiosInstance, AxiosRequestConfig } from './types';
 import Axios from './core/Axios';
 import { extend } from './helpers/util';
+import defaults from './defaults';
 
 /**
  * @description	创建一个实例
@@ -16,8 +17,8 @@ import { extend } from './helpers/util';
  * @date 2019-09-18
  * @returns {AxiosInstance}
  */
-function createInstance(): AxiosInstance {
-  const context = new Axios();
+function createInstance(config: AxiosRequestConfig): AxiosInstance {
+  const context = new Axios(config);
   const instance = Axios.prototype.request.bind(context);
 
   extend(instance, context);
@@ -25,6 +26,6 @@ function createInstance(): AxiosInstance {
   return instance as AxiosInstance;
 }
 
-const axios = createInstance();
+const axios = createInstance(defaults);
 
 export default axios;
