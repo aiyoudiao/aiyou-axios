@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-18 16:27:53
- * @LastEditTime: 2019-09-19 15:24:50
+ * @LastEditTime: 2019-09-19 16:45:00
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types/index';

@@ -5,7 +5,7 @@ import InterceptorManager from '../core/InterceptorManager';
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 22:19:20
- * @LastEditTime: 2019-09-19 15:31:23
+ * @LastEditTime: 2019-09-19 15:47:52
  * @LastEditors: ilovejwl
  */
 export type Method =
@@ -141,6 +141,18 @@ export interface AxiosInstance extends Axios {
   <T = any>(config: AxiosRequestConfig): AxiosPromise<T>;
 
   <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
+}
+
+/**
+ * @description	Axios 静态方法扩展的接口
+ * @author ilovejwl
+ * @date 2019-09-19
+ * @export
+ * @interface AxiosStatic
+ * @extends {AxiosInstance}
+ */
+export interface AxiosStatic extends AxiosInstance {
+  create(config?: AxiosRequestConfig): AxiosInstance;
 }
 
 /**

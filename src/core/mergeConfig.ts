@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-19 12:03:37
- * @LastEditTime: 2019-09-19 14:39:31
+ * @LastEditTime: 2019-09-19 15:52:56
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig } from '../types/index';
@@ -80,7 +80,7 @@ stratKeysDeepMerge.forEach(key => {
  */
 export default function mergeConfig(
   config1: AxiosRequestConfig,
-  config2: AxiosRequestConfig
+  config2?: AxiosRequestConfig
 ): AxiosRequestConfig {
   if (!config2) {
     config2 = {};
