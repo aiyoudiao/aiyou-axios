@@ -5,7 +5,7 @@ import InterceptorManager from '../core/InterceptorManager';
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 22:19:20
- * @LastEditTime: 2019-09-19 15:47:52
+ * @LastEditTime: 2019-09-19 19:36:45
  * @LastEditors: ilovejwl
  */
 export type Method =
@@ -32,7 +32,7 @@ export type Method =
  * @interface AxiosRequestConfig
  */
 export interface AxiosRequestConfig {
-  url: string;
+  url?: string;
   method?: Method;
   data?: any;
   params?: any;
@@ -44,6 +44,8 @@ export interface AxiosRequestConfig {
 
   transformRequest?: AxiosTransformer | AxiosTransformer[];
   transformResponse?: AxiosTransformer | AxiosTransformer[];
+
+  cancelToken?: CancelToken;
 }
 
 /**
@@ -55,6 +57,88 @@ export interface AxiosRequestConfig {
  */
 export interface AxiosTransformer {
   (data: any, headers?: any): any;
+}
+
+/**
+ * @description	取消的实例类型的接口
+ * @author ilovejwl
+ * @date 2019-09-19
+ * @export
+ * @interface CancelToken
+ */
+export interface CancelToken {
+  promise: Promise<Cancel>;
+  reason?: Cancel;
+
+  throwIfRequested(): void;
+}
+
+/**
+ * @description 取消方法的接口
+ * @author ilovejwl
+ * @date 2019-09-19
+ * @export
+ * @interface Canceler
+ */
+export interface Canceler {
+  (message?: string): void;
+}
+
+/**
+ * @description	CancelToken 类构造函数参数的接口
+ * @author ilovejwl
+ * @date 2019-09-19
+ * @export
+ * @interface CancelExecutor
+ */
+export interface CancelExecutor {
+  (cancel: Canceler): void;
+}
+
+/**
+ * @description	CancelToken 类静态方法 source 函数的返回值数据格式接口
+ * @author ilovejwl
+ * @date 2019-09-19
+ * @export
+ * @interface CancelTokenSource
+ */
+export interface CancelTokenSource {
+  token: CancelToken;
+  cancel: Canceler;
+}
+
+/**
+ * @description	CancelTokenStatic 则作为 CancelToken 类的类接口
+ * @author ilovejwl
+ * @date 2019-09-19
+ * @export
+ * @interface CancelTokenStatic
+ */
+export interface CancelTokenStatic {
+  new (executor: CancelExecutor): CancelToken;
+  source(): CancelTokenSource;
+}
+
+/**
+ * @description	Cancel 是实例类型的接口定义
+ * @author ilovejwl
+ * @date 2019-09-19
+ * @export
+ * @interface Cancel
+ */
+export interface Cancel {
+  message?: string;
+}
+
+/**
+ * @description	CancelStatic 是类类型的接口定义
+ * @author ilovejwl
+ * @date 2019-09-19
+ * @export
+ * @interface CancelStatic
+ */
+export interface CancelStatic {
+  new (message?: string): Cancel;
 }
 
 /**
@@ -153,6 +237,10 @@ export interface AxiosInstance extends Axios {
  */
 export interface AxiosStatic extends AxiosInstance {
   create(config?: AxiosRequestConfig): AxiosInstance;
+
+  CancelToken: CancelTokenStatic;
+  Cancel: CancelStatic;
+  isCancel: (value: any) => boolean;
 }
 
 /**

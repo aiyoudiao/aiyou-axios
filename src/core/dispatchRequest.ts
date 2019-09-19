@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-18 16:27:53
- * @LastEditTime: 2019-09-19 16:45:00
+ * @LastEditTime: 2019-09-19 19:31:21
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types/index';
@@ -22,6 +22,8 @@ import transform from './transform';
  * @returns {AxiosPromise}
  */
 export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
+  throwIfCancellationRequested(config);
+
   processConfig(config);
   return xhr(config).then(res => {
     return transformResponseData(res);
@@ -88,4 +90,10 @@ function transformResponseData(res: AxiosResponse): AxiosResponse {
   // res.data = transformResponse(res.data);
   res.data = transform(res.data, res.headers, res.config.transformResponse);
   return res;
+}
+
+function throwIfCancellationRequested(config: AxiosRequestConfig): void {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested();
+  }
 }

@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-08-12 07:12:11
- * @LastEditTime: 2019-09-19 15:53:10
+ * @LastEditTime: 2019-09-19 19:22:34
  * @LastEditors: ilovejwl
  */
 import { AxiosInstance, AxiosRequestConfig, AxiosStatic } from './types';
@@ -11,6 +11,8 @@ import Axios from './core/Axios';
 import { extend } from './helpers/util';
 import defaults from './defaults';
 import mergeConfig from './core/mergeConfig';
+import CancelToken from './cancel/CancelToken';
+import Cancel, { isCancel } from './cancel/Cancel';
 
 // /**
 //  * @description	创建一个实例
@@ -47,5 +49,9 @@ const axios = createInstance(defaults);
 axios.create = function create(config) {
   return createInstance(mergeConfig(defaults, config));
 };
+
+axios.CancelToken = CancelToken;
+axios.Cancel = Cancel;
+axios.isCancel = isCancel;
 
 export default axios;

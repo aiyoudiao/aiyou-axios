@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 22:33:46
- * @LastEditTime: 2019-09-19 14:19:59
+ * @LastEditTime: 2019-09-19 19:36:57
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types/index';
@@ -20,7 +20,15 @@ import { createError } from '../helpers/error';
  */
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
-    const { data = null, url, method = 'get', headers, responseType, timeout } = config;
+    const {
+      data = null,
+      url,
+      method = 'get',
+      headers,
+      responseType,
+      timeout,
+      cancelToken
+    } = config;
 
     const request = new XMLHttpRequest();
 
@@ -32,7 +40,15 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       request.timeout = timeout;
     }
 
-    request.open(method.toLowerCase(), url, true);
+    if (cancelToken) {
+      // tslint:disable-next-line: no-floating-promises
+      cancelToken.promise.then(reason => {
+        request.abort();
+        reject(reason);
+      });
+    }
+
+    request.open(method.toLowerCase(), url!, true);
 
     request.onreadystatechange = function handleLoad() {
       if (request.readyState !== 4) {
