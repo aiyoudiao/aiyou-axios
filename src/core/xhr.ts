@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 22:33:46
- * @LastEditTime: 2019-09-19 19:36:57
+ * @LastEditTime: 2019-09-19 20:24:26
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types/index';
@@ -27,7 +27,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       headers,
       responseType,
       timeout,
-      cancelToken
+      cancelToken,
+      withCredentials
     } = config;
 
     const request = new XMLHttpRequest();
@@ -46,6 +47,10 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         request.abort();
         reject(reason);
       });
+    }
+
+    if (withCredentials) {
+      request.withCredentials = true;
     }
 
     request.open(method.toLowerCase(), url!, true);

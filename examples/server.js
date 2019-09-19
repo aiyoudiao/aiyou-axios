@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 23:11:03
- * @LastEditTime: 2019-09-19 14:17:17
+ * @LastEditTime: 2019-09-19 20:28:25
  * @LastEditors: ilovejwl
  */
 const express = require ('express');
@@ -140,6 +140,10 @@ router.post ('/cancel/post', function (req, res) {
   setTimeout (() => {
     res.json (req.body);
   }, 1000);
+});
+
+router.get ('/more/get', function (req, res) {
+  res.json (req.cookies);
 });
 
 app.use (router);

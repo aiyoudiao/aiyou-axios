@@ -5,7 +5,7 @@ import InterceptorManager from '../core/InterceptorManager';
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 22:19:20
- * @LastEditTime: 2019-09-19 19:36:45
+ * @LastEditTime: 2019-09-19 20:22:50
  * @LastEditors: ilovejwl
  */
 export type Method =
@@ -46,6 +46,8 @@ export interface AxiosRequestConfig {
   transformResponse?: AxiosTransformer | AxiosTransformer[];
 
   cancelToken?: CancelToken;
+
+  withCredentials?: boolean;
 }
 
 /**
