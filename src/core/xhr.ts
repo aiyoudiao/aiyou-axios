@@ -3,12 +3,14 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 22:33:46
- * @LastEditTime: 2019-09-19 20:24:26
+ * @LastEditTime: 2019-09-20 11:19:20
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types/index';
 import { parseHeaders } from '../helpers/header';
 import { createError } from '../helpers/error';
+import { isURLSameOrigin } from '../helpers/url';
+import cookie from '../helpers/cookie';
 
 /**
  * @description	XMLHttpRequest对象
@@ -28,7 +30,9 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       responseType,
       timeout,
       cancelToken,
-      withCredentials
+      withCredentials,
+      xsrfCookieName,
+      xsrfHeaderName
     } = config;
 
     const request = new XMLHttpRequest();
@@ -51,6 +55,16 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
     if (withCredentials) {
       request.withCredentials = true;
+    }
+
+    if ((withCredentials || isURLSameOrigin(url!)) && xsrfCookieName) {
+      console.log(`xsrf: ${xsrfCookieName}`);
+      const xsrfValue = cookie.read(xsrfCookieName);
+      console.log(`xsrfValue: ${xsrfValue}`);
+
+      if (xsrfValue) {
+        headers[xsrfHeaderName!] = xsrfValue;
+      }
     }
 
     request.open(method.toLowerCase(), url!, true);

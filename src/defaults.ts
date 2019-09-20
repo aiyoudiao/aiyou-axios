@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-19 11:11:44
- * @LastEditTime: 2019-09-19 15:13:29
+ * @LastEditTime: 2019-09-19 21:12:21
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig } from './types/index';
@@ -31,7 +31,10 @@ const defaults: AxiosRequestConfig = {
     function(data: any): any {
       return transformResponse(data);
     }
-  ]
+  ],
+
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN'
 };
 
 const methodsNoData = ['delete', 'get', 'head', 'options'];

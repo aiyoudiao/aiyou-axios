@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-18 08:43:00
- * @LastEditTime: 2019-09-18 10:26:53
+ * @LastEditTime: 2019-09-19 21:22:05
  * @LastEditors: ilovejwl
  */
 import { isDate, isObject, isPlainObject } from './util';
@@ -97,4 +97,28 @@ export function buildURL(url: string, params?: any) {
   }
 
   return url;
+}
+
+interface URLOrigin {
+  protocol: string;
+  host: string;
+}
+
+const urlParsingNode = document.createElement('a');
+const currentOrigin = resolveURL(window.location.href);
+
+export function isURLSameOrigin(requestURL: string): boolean {
+  const parsedOrigin = resolveURL(requestURL);
+
+  return (
+    parsedOrigin.protocol === currentOrigin.protocol && parsedOrigin.host === currentOrigin.host
+  );
+}
+
+function resolveURL(url: string): URLOrigin {
+  urlParsingNode.setAttribute('href', url);
+
+  const { protocol, host } = urlParsingNode;
+
+  return { protocol, host };
 }

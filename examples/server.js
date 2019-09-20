@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 23:11:03
- * @LastEditTime: 2019-09-19 20:28:25
+ * @LastEditTime: 2019-09-20 13:44:25
  * @LastEditors: ilovejwl
  */
 const express = require ('express');
@@ -32,6 +32,12 @@ app.use (express.static (__dirname));
 
 app.use (bodyParser.json ());
 app.use (bodyParser.urlencoded ({extended: true}));
+
+app.use(express.static(__dirname, {
+  setHeaders (res) {
+    res.cookie('XSRF-TOKEN-D', '1234abc');
+  }
+}))
 
 const router = express.Router ();
 
@@ -141,6 +147,8 @@ router.post ('/cancel/post', function (req, res) {
     res.json (req.body);
   }, 1000);
 });
+
+
 
 router.get ('/more/get', function (req, res) {
   res.json (req.cookies);
