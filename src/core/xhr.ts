@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 22:33:46
- * @LastEditTime: 2019-09-20 11:19:20
+ * @LastEditTime: 2019-09-20 15:35:02
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types/index';
@@ -11,6 +11,7 @@ import { parseHeaders } from '../helpers/header';
 import { createError } from '../helpers/error';
 import { isURLSameOrigin } from '../helpers/url';
 import cookie from '../helpers/cookie';
+import { isFormData } from '../helpers/util';
 
 /**
  * @description	XMLHttpRequest对象
@@ -21,6 +22,16 @@ import cookie from '../helpers/cookie';
  * @returns {AxiosPromise}
  */
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
+  /**
+   * 1. 创建一个 request 对象实例。
+   * 2. 执行 request.open 方法初始化。
+   * 3. configureRequest 配置 request 对象。
+   * 4. addEvents 给 request 添加事件处理函数。
+   * 5. processRequestHeaders 处理请求 headers。
+   * 6. processCancel 处理请求取消逻辑。
+   * 7. request.send 方法发送请求。
+   */
+
   return new Promise((resolve, reject) => {
     const {
       data = null,
@@ -32,88 +43,143 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       cancelToken,
       withCredentials,
       xsrfCookieName,
-      xsrfHeaderName
+      xsrfHeaderName,
+      onDownloadProgress,
+      onUploadProgress
     } = config;
 
     const request = new XMLHttpRequest();
 
-    if (responseType) {
-      request.responseType = responseType;
+    request.open(method.toLowerCase(), url!, true);
+
+    configureRequest();
+
+    addEvents();
+
+    processRequestHeaders();
+
+    processCancel();
+
+    request.send(data);
+
+    /**
+     * @description	配置 request 对象
+     * @author ilovejwl
+     * @date 2019-09-20
+     */
+    function configureRequest(): void {
+      if (responseType) {
+        request.responseType = responseType;
+      }
+
+      if (timeout) {
+        request.timeout = timeout;
+      }
+
+      if (withCredentials) {
+        request.withCredentials = true;
+      }
     }
 
-    if (timeout) {
-      request.timeout = timeout;
+    /**
+     * @description	给 request 添加事件处理函数
+     * @author ilovejwl
+     * @date 2019-09-20
+     */
+    function addEvents(): void {
+      request.onreadystatechange = function handleLoad() {
+        if (request.readyState !== 4) {
+          return;
+        }
+
+        if (request.status === 0) {
+          return;
+        }
+
+        const responseHeaders = parseHeaders(request.getAllResponseHeaders());
+        const responseData =
+          responseType && responseType !== 'text' ? request.response : request.responseText;
+        const response: AxiosResponse = {
+          data: responseData,
+          status: request.status,
+          statusText: request.statusText,
+          headers: responseHeaders,
+          config,
+          request
+        };
+        // resolve(response);
+        handleResponse(response);
+      };
+
+      request.onerror = function handleError() {
+        // reject(new Error('Network Error.'));
+        reject(createError('Network Error.', config, null, request));
+      };
+
+      request.ontimeout = function handleTimeout() {
+        // reject(new Error(`Timeout of ${timeout} ms exceeded.`));
+        reject(
+          createError(
+            `Timeout of ${timeout} ms exceeded.`,
+            config,
+            'ECONNABORTED(连接中断)',
+            request
+          )
+        );
+      };
+
+      if (onDownloadProgress) {
+        request.onprogress = onDownloadProgress;
+      }
+
+      if (onUploadProgress) {
+        // request.upload.onprogress = onDownloadProgress;
+      }
     }
 
-    if (cancelToken) {
-      // tslint:disable-next-line: no-floating-promises
-      cancelToken.promise.then(reason => {
-        request.abort();
-        reject(reason);
+    /**
+     * @description	处理请求 headers
+     * @author ilovejwl
+     * @date 2019-09-20
+     */
+    function processRequestHeaders(): void {
+      if (isFormData(data)) {
+        delete headers['Content-Type'];
+      }
+
+      if ((withCredentials || isURLSameOrigin(url!)) && xsrfCookieName) {
+        console.log(`xsrf: ${xsrfCookieName}`);
+        const xsrfValue = cookie.read(xsrfCookieName);
+        console.log(`xsrfValue: ${xsrfValue}`);
+
+        if (xsrfValue) {
+          headers[xsrfHeaderName!] = xsrfValue;
+        }
+      }
+
+      Object.keys(headers).forEach(name => {
+        if (data === null && name.toUpperCase() === 'content-type') {
+          delete headers[name];
+        } else {
+          request.setRequestHeader(name, headers[name]);
+        }
       });
     }
 
-    if (withCredentials) {
-      request.withCredentials = true;
-    }
-
-    if ((withCredentials || isURLSameOrigin(url!)) && xsrfCookieName) {
-      console.log(`xsrf: ${xsrfCookieName}`);
-      const xsrfValue = cookie.read(xsrfCookieName);
-      console.log(`xsrfValue: ${xsrfValue}`);
-
-      if (xsrfValue) {
-        headers[xsrfHeaderName!] = xsrfValue;
+    /**
+     * @description	处理请求取消逻辑
+     * @author ilovejwl
+     * @date 2019-09-20
+     */
+    function processCancel(): void {
+      if (cancelToken) {
+        // tslint:disable-next-line: no-floating-promises
+        cancelToken.promise.then(reason => {
+          request.abort();
+          reject(reason);
+        });
       }
     }
-
-    request.open(method.toLowerCase(), url!, true);
-
-    request.onreadystatechange = function handleLoad() {
-      if (request.readyState !== 4) {
-        return;
-      }
-
-      if (request.status === 0) {
-        return;
-      }
-
-      const responseHeaders = parseHeaders(request.getAllResponseHeaders());
-      const responseData =
-        responseType && responseType !== 'text' ? request.response : request.responseText;
-      const response: AxiosResponse = {
-        data: responseData,
-        status: request.status,
-        statusText: request.statusText,
-        headers: responseHeaders,
-        config,
-        request
-      };
-      // resolve(response);
-      handleResponse(response);
-    };
-
-    request.onerror = function handleError() {
-      // reject(new Error('Network Error.'));
-      reject(createError('Network Error.', config, null, request));
-    };
-
-    request.ontimeout = function handleTimeout() {
-      // reject(new Error(`Timeout of ${timeout} ms exceeded.`));
-      reject(
-        createError(`Timeout of ${timeout} ms exceeded.`, config, 'ECONNABORTED(连接中断)', request)
-      );
-    };
-
-    Object.keys(headers).forEach(name => {
-      if (data === null && name.toUpperCase() === 'content-type') {
-        delete headers[name];
-      } else {
-        request.setRequestHeader(name, headers[name]);
-      }
-    });
-
-    request.send(data);
 
     /**
      * @description	响应时的一些处理

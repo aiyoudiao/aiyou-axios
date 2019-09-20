@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 22:50:17
- * @LastEditTime: 2019-09-17 22:51:54
+ * @LastEditTime: 2019-09-20 15:51:43
  * @LastEditors: ilovejwl
  */
 
@@ -61,6 +61,10 @@ module.exports = {
             },
           },
         ],
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },

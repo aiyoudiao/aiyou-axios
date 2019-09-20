@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 23:11:03
- * @LastEditTime: 2019-09-20 13:44:25
+ * @LastEditTime: 2019-09-20 16:10:57
  * @LastEditors: ilovejwl
  */
 const express = require ('express');
@@ -12,6 +12,8 @@ const webpack = require ('webpack');
 const webpackDevMiddleware = require ('webpack-dev-middleware');
 const webpackHotMiddleware = require ('webpack-hot-middleware');
 const WebpackConfig = require ('./webpack.config');
+
+const path = require('path');
 
 const app = express ();
 const compiler = webpack (WebpackConfig);
@@ -33,11 +35,20 @@ app.use (express.static (__dirname));
 app.use (bodyParser.json ());
 app.use (bodyParser.urlencoded ({extended: true}));
 
-app.use(express.static(__dirname, {
-  setHeaders (res) {
-    res.cookie('XSRF-TOKEN-D', '1234abc');
-  }
-}))
+app.use (
+  express.static (__dirname, {
+    setHeaders (res) {
+      res.cookie ('XSRF-TOKEN-D', '1234abc');
+    },
+  })
+);
+
+const multipart = require ('connect-multiparty');
+app.use (
+  multipart ({
+    uploadDir: path.resolve (__dirname, 'upload-file'),
+  })
+);
 
 const router = express.Router ();
 
@@ -148,10 +159,13 @@ router.post ('/cancel/post', function (req, res) {
   }, 1000);
 });
 
-
-
 router.get ('/more/get', function (req, res) {
   res.json (req.cookies);
+});
+
+router.post ('/more/upload', function (req, res) {
+  console.log (req.body, req.files);
+  res.end ('upload success!');
 });
 
 app.use (router);

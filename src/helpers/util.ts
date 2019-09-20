@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-18 08:43:31
- * @LastEditTime: 2019-09-19 13:39:19
+ * @LastEditTime: 2019-09-20 14:46:07
  * @LastEditors: ilovejwl
  */
 const toString = Object.prototype.toString;
@@ -48,6 +48,18 @@ export function isPlainObject(val: any): val is Object {
    * 1. 这种判断方式对于 FormData、ArrayBuffer 这些类型的判断为 false
    */
   return toString.call(val) === '[object Object]';
+}
+
+/**
+ * @description	是否为FormData对象
+ * @author ilovejwl
+ * @date 2019-09-20
+ * @export
+ * @param {*} val
+ * @returns {boolean}
+ */
+export function isFormData(val: any): boolean {
+  return typeof val !== 'undefined' && val instanceof FormData;
 }
 
 /**
