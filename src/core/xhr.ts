@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 22:33:46
- * @LastEditTime: 2019-09-20 15:35:02
+ * @LastEditTime: 2019-09-21 13:03:47
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types/index';
@@ -45,7 +45,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       xsrfCookieName,
       xsrfHeaderName,
       onDownloadProgress,
-      onUploadProgress
+      onUploadProgress,
+      auth
     } = config;
 
     const request = new XMLHttpRequest();
@@ -145,6 +146,10 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     function processRequestHeaders(): void {
       if (isFormData(data)) {
         delete headers['Content-Type'];
+      }
+
+      if (auth) {
+        headers['Authorization'] = 'Basic ' + btoa(auth.username + ':' + auth.password);
       }
 
       if ((withCredentials || isURLSameOrigin(url!)) && xsrfCookieName) {

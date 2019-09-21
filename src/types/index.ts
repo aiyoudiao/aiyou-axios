@@ -5,7 +5,7 @@ import InterceptorManager from '../core/InterceptorManager';
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 22:19:20
- * @LastEditTime: 2019-09-19 20:59:07
+ * @LastEditTime: 2019-09-21 10:59:04
  * @LastEditors: ilovejwl
  */
 export type Method =
@@ -54,6 +54,13 @@ export interface AxiosRequestConfig {
 
   onDownloadProgress?: (e: ProgressEvent) => void;
   onUploadProgress?: (e: ProgressEvent) => void;
+
+  auth?: AxiosBaseCredentials;
+}
+
+export interface AxiosBaseCredentials {
+  username: string;
+  password: string;
 }
 
 /**

@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-19 12:03:37
- * @LastEditTime: 2019-09-19 15:52:56
+ * @LastEditTime: 2019-09-21 10:59:52
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig } from '../types/index';
@@ -63,7 +63,7 @@ function deepMergeStrat(val1: any, val2: any): any {
   }
 }
 
-const stratKeysDeepMerge = ['headers'];
+const stratKeysDeepMerge = ['headers', 'auth'];
 
 stratKeysDeepMerge.forEach(key => {
   strats[key] = deepMergeStrat;
