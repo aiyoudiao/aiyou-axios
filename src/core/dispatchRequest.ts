@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-18 16:27:53
- * @LastEditTime: 2019-09-19 19:31:21
+ * @LastEditTime: 2019-09-21 15:31:11
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types/index';
@@ -52,8 +52,8 @@ function processConfig(config: AxiosRequestConfig): void {
  * @returns {string}
  */
 function transformUrl(config: AxiosRequestConfig): string {
-  const { url, params } = config;
-  return buildURL(url!, params);
+  const { url, params, paramsSerializer } = config;
+  return buildURL(url!, params, paramsSerializer);
 }
 
 /**

@@ -3,10 +3,10 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-18 08:43:00
- * @LastEditTime: 2019-09-19 21:22:05
+ * @LastEditTime: 2019-09-21 15:29:45
  * @LastEditors: ilovejwl
  */
-import { isDate, isObject, isPlainObject } from './util';
+import { isDate, isObject, isPlainObject, isURLSearchParams } from './util';
 
 /**
  * @description	对字符串进行编码
@@ -35,7 +35,7 @@ function encode(val: string): string {
  * @param {*} [params]
  * @returns
  */
-export function buildURL(url: string, params?: any) {
+export function buildURL(url: string, params?: any, paramsSerializer?: (params: any) => string) {
   /**
    * 1. 判断params 是否为空
    * 2. 遍历一遍params中的key
@@ -58,34 +58,42 @@ export function buildURL(url: string, params?: any) {
     return url;
   }
 
-  const parts: string[] = [];
+  let serializedParams;
 
-  Object.keys(params).forEach(key => {
-    let val = params[key];
-    if (val === null || typeof val === 'undefined') {
-      return;
-    }
+  if (paramsSerializer) {
+    serializedParams = paramsSerializer(params);
+  } else if (isURLSearchParams(params)) {
+    serializedParams = params.toString();
+  } else {
+    const parts: string[] = [];
 
-    let values: string[];
-    if (Array.isArray(val)) {
-      values = val;
-      key += '[]';
-    } else {
-      values = [val];
-    }
-
-    values.forEach(val => {
-      if (isDate(val)) {
-        val = val.toISOString();
-        // } else if (isObject(val)) {
-      } else if (isPlainObject(val)) {
-        val = JSON.stringify(val);
+    Object.keys(params).forEach(key => {
+      let val = params[key];
+      if (val === null || typeof val === 'undefined') {
+        return;
       }
-      parts.push(`${encode(key)}=${encode(val)}`);
-    });
-  });
 
-  let serializedParams = parts.join('&');
+      let values: string[];
+      if (Array.isArray(val)) {
+        values = val;
+        key += '[]';
+      } else {
+        values = [val];
+      }
+
+      values.forEach(val => {
+        if (isDate(val)) {
+          val = val.toISOString();
+          // } else if (isObject(val)) {
+        } else if (isPlainObject(val)) {
+          val = JSON.stringify(val);
+        }
+        parts.push(`${encode(key)}=${encode(val)}`);
+      });
+    });
+
+    serializedParams = parts.join('&');
+  }
 
   if (serializedParams) {
     const markIndex = url.indexOf('#');

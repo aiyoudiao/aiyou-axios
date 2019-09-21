@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 22:33:46
- * @LastEditTime: 2019-09-21 14:09:00
+ * @LastEditTime: 2019-09-21 15:04:38
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types/index';
@@ -47,7 +47,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       onDownloadProgress,
       onUploadProgress,
       auth,
-      validateStatus
+      validateStatus,
+      paramsSerializer
     } = config;
 
     const request = new XMLHttpRequest();

@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-18 08:43:31
- * @LastEditTime: 2019-09-20 14:46:07
+ * @LastEditTime: 2019-09-21 15:28:26
  * @LastEditors: ilovejwl
  */
 const toString = Object.prototype.toString;
@@ -60,6 +60,18 @@ export function isPlainObject(val: any): val is Object {
  */
 export function isFormData(val: any): boolean {
   return typeof val !== 'undefined' && val instanceof FormData;
+}
+
+/**
+ * @description	是否为URLSearchParams对象
+ * @author ilovejwl
+ * @date 2019-09-21
+ * @export
+ * @param {*} val
+ * @returns {val is URLSearchParams}
+ */
+export function isURLSearchParams(val: any): val is URLSearchParams {
+  return typeof val !== 'undefined' && val instanceof URLSearchParams;
 }
 
 /**
