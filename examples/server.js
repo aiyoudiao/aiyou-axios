@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 23:11:03
- * @LastEditTime: 2019-09-21 13:07:39
+ * @LastEditTime: 2019-09-21 14:15:32
  * @LastEditors: ilovejwl
  */
 const express = require ('express');
@@ -179,6 +179,11 @@ router.post ('/more/post', function (req, res) {
   } else {
     res.end ('UnAuthorization');
   }
+});
+
+router.get ('/more/304', function (req, res) {
+  res.status (304);
+  res.end ();
 });
 
 app.use (router);

@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 22:33:46
- * @LastEditTime: 2019-09-21 13:03:47
+ * @LastEditTime: 2019-09-21 14:09:00
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types/index';
@@ -46,7 +46,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       xsrfHeaderName,
       onDownloadProgress,
       onUploadProgress,
-      auth
+      auth,
+      validateStatus
     } = config;
 
     const request = new XMLHttpRequest();
@@ -193,7 +194,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
      * @param {AxiosResponse} response
      */
     function handleResponse(response: AxiosResponse) {
-      if (response.status >= 200 && response.status < 300) {
+      // if (response.status >= 200 && response.status < 300) {
+      if (!validateStatus || validateStatus(response.status)) {
         resolve(response);
       } else {
         // reject(new Error(`Request failed with status code ${response.status}`));
