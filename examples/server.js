@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 23:11:03
- * @LastEditTime: 2019-09-21 15:33:17
+ * @LastEditTime: 2019-09-21 18:17:25
  * @LastEditors: ilovejwl
  */
 const express = require ('express');
@@ -184,6 +184,14 @@ router.post ('/more/post', function (req, res) {
 router.get ('/more/304', function (req, res) {
   res.status (304);
   res.end ();
+});
+
+router.get ('/more/A', function (req, res) {
+  res.end ('A');
+});
+
+router.get ('/more/B', function (req, res) {
+  res.end ('B');
 });
 
 app.use (router);

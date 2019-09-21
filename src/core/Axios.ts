@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-18 16:27:18
- * @LastEditTime: 2019-09-19 14:42:48
+ * @LastEditTime: 2019-09-21 17:56:18
  * @LastEditors: ilovejwl
  */
 import {
@@ -15,7 +15,7 @@ import {
   Interceptors,
   PromiseChain
 } from '../types/index';
-import dispatchRequest from './dispatchRequest';
+import dispatchRequest, { transformUrl } from './dispatchRequest';
 import InterceptorManager from './InterceptorManager';
 import mergeConfig from './mergeConfig';
 
@@ -27,7 +27,7 @@ import mergeConfig from './mergeConfig';
  * @class Axios
  * @implements {IAxios}
  */
-export default class Axios implements IAxios {
+export default class Axios {
   defaults: AxiosRequestConfig;
   interceptors: Interceptors;
 
@@ -197,6 +197,19 @@ export default class Axios implements IAxios {
    */
   put(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise {
     return this._requestMethodWithData('put', url, data, config);
+  }
+
+  /**
+   * @description	获取处理配置信息之后的url
+   * @author ilovejwl
+   * @date 2019-09-21
+   * @param {AxiosRequestConfig} [config]
+   * @returns {string}
+   * @memberof Axios
+   */
+  getUri(config?: AxiosRequestConfig): string {
+    config = mergeConfig(this.defaults, config);
+    return transformUrl(config);
   }
 
   /**

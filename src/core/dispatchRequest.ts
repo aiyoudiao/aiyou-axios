@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-18 16:27:53
- * @LastEditTime: 2019-09-21 16:14:46
+ * @LastEditTime: 2019-09-21 18:07:17
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types/index';
@@ -51,8 +51,8 @@ function processConfig(config: AxiosRequestConfig): void {
  * @param {AxiosRequestConfig} config
  * @returns {string}
  */
-function transformUrl(config: AxiosRequestConfig): string {
-  const { url, params, paramsSerializer, baseURL } = config;
+export function transformUrl(config: AxiosRequestConfig): string {
+  let { url, params, paramsSerializer, baseURL } = config;
 
   if (baseURL && !isAbsoluteURL(url!)) {
     url = combineURL(baseURL, url);

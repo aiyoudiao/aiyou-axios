@@ -5,7 +5,7 @@ import InterceptorManager from '../core/InterceptorManager';
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 22:19:20
- * @LastEditTime: 2019-09-21 16:02:31
+ * @LastEditTime: 2019-09-21 17:49:58
  * @LastEditors: ilovejwl
  */
 export type Method =
@@ -232,6 +232,12 @@ export interface Axios {
   put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>;
 
   patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>;
+
+  getUri(config?: AxiosRequestConfig): string;
+}
+
+export interface AxiosClassStatic {
+  new (config: AxiosRequestConfig): Axios;
 }
 
 /**
@@ -262,6 +268,10 @@ export interface AxiosStatic extends AxiosInstance {
   CancelToken: CancelTokenStatic;
   Cancel: CancelStatic;
   isCancel: (value: any) => boolean;
+
+  all<T>(promises: Array<T | Promise<T>>): Promise<T[]>;
+  spread<T, R>(callback: (...args: T[]) => R): (arr: T[]) => R;
+  Axios: AxiosClassStatic;
 }
 
 /**
