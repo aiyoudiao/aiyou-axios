@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-18 08:43:00
- * @LastEditTime: 2019-09-21 15:29:45
+ * @LastEditTime: 2019-09-21 16:12:28
  * @LastEditors: ilovejwl
  */
 import { isDate, isObject, isPlainObject, isURLSearchParams } from './util';
@@ -129,4 +129,31 @@ function resolveURL(url: string): URLOrigin {
   const { protocol, host } = urlParsingNode;
 
   return { protocol, host };
+}
+
+/**
+ * @description	是否是绝对路径
+ * @author ilovejwl
+ * @date 2019-09-21
+ * @export
+ * @param {string} url
+ * @returns {boolean}
+ */
+export function isAbsoluteURL(url: string): boolean {
+  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
+}
+
+/**
+ * @description	合并URL路径
+ * @author ilovejwl
+ * @date 2019-09-21
+ * @export
+ * @param {string} baseURL
+ * @param {string} [relativeURL]
+ * @returns {string}
+ */
+export function combineURL(baseURL: string, relativeURL?: string): string {
+  return relativeURL
+    ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/\+/, '')
+    : baseURL;
 }

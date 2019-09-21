@@ -5,7 +5,7 @@ import InterceptorManager from '../core/InterceptorManager';
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 22:19:20
- * @LastEditTime: 2019-09-21 15:04:20
+ * @LastEditTime: 2019-09-21 16:02:31
  * @LastEditors: ilovejwl
  */
 export type Method =
@@ -60,6 +60,8 @@ export interface AxiosRequestConfig {
   validateStatus?: (status: number) => boolean;
 
   paramsSerializer?: (params: any) => string;
+
+  baseURL?: string;
 }
 
 export interface AxiosBaseCredentials {
