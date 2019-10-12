@@ -1,22 +1,29 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
-    "target": "es5",
-    "module":"es2015",
+    "target": "es2016",
+    "module": "es2015",
     "lib": ["es2015", "es2016", "es2017", "dom"],
     "strict": true,
     "sourceMap": true,
     "declaration": true,
     "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"],
+      "src/*": ["src/*"],
+      "app/*": ["src/lib/app/*"],
+      "vendor/*": ["src/lib/vendor/*"],
+      "common/*": ["src/common/*"],
+      "mycomponent/*": ["src/mycomponent/*"],
+      "loaders/*": ["loaders/*"]
+    },
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "declarationDir": "dist/types",
     "outDir": "dist/lib",
-    "typeRoots": [
-      "node_modules/@types"
-    ]
+    "typeRoots": ["node_modules/@types"]
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src", "test"],
+  "exclude": ["node_modules"]
 }

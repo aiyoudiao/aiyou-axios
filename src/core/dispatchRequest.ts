@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-18 16:27:53
- * @LastEditTime: 2019-09-21 18:07:17
+ * @LastEditTime: 2019-10-08 23:17:07
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types/index';
@@ -25,9 +25,17 @@ export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromis
   throwIfCancellationRequested(config);
 
   processConfig(config);
-  return xhr(config).then(res => {
-    return transformResponseData(res);
-  });
+  return xhr(config).then(
+    res => {
+      return transformResponseData(res);
+    },
+    e => {
+      if (e && e.response) {
+        e.response = transformResponseData(e.response);
+      }
+      return Promise.reject(e);
+    }
+  );
 }
 
 /**

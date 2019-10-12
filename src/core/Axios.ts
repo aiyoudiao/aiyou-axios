@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-18 16:27:18
- * @LastEditTime: 2019-09-21 17:56:18
+ * @LastEditTime: 2019-10-08 23:16:11
  * @LastEditors: ilovejwl
  */
 import {
@@ -93,6 +93,7 @@ export default class Axios {
     }
 
     config = mergeConfig(this.defaults, config);
+    config.method = config.method.toLocaleLowerCase();
 
     const chain: PromiseChain[] = [
       {

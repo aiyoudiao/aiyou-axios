@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-17 23:11:03
- * @LastEditTime: 2019-09-21 18:17:25
+ * @LastEditTime: 2019-10-08 23:06:00
  * @LastEditors: ilovejwl
  */
 const express = require ('express');
@@ -196,7 +196,7 @@ router.get ('/more/B', function (req, res) {
 
 app.use (router);
 
-const port = process.env.PORT || 8123;
+const port = 80; //process.env.PORT || 8123;
 module.exports = app.listen (port, () => {
   console.log (`Server listening on http://localhost:${port}, Ctrl+C to stop`);
 });

@@ -1,0 +1,1 @@
+{"version":3,"file":"ilovejwl-axios.es5.js","sources":["../src/ilovejwl-axios.ts"],"sourcesContent":["// Import here Polyfills if needed. Recommended core-js (npm i -D core-js)\r\n// import \"core-js/fn/array.find\"\r\n// ...\r\nexport default class DummyClass {}\r\n"],"names":[],"mappings":"AAAA;;;AAGA;IAAA;KAAkC;IAAD,iBAAC;CAAA,IAAA;;;;"}
