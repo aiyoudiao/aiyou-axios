@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-10-08 16:12:20
- * @LastEditTime: 2019-10-10 16:48:17
+ * @LastEditTime: 2019-10-15 21:37:17
  * @LastEditors: ilovejwl
  */
 import axios, { AxiosResponse, AxiosError } from 'src/index';
@@ -275,6 +275,38 @@ describe('requests', () => {
 
     return getAjaxRequest().then(request => {
       expect(request.requestHeaders['Content-Type']).toBe('application/json');
+    });
+  });
+
+  test('should support array buffer response', done => {
+    let response: AxiosResponse;
+
+    function str2ab(str: string) {
+      const buff = new ArrayBuffer(str.length * 2);
+      const view = new Uint16Array(buff);
+      for (let i = 0; i < str.length; i++) {
+        view[i] = str.charCodeAt(i);
+      }
+      return buff;
+    }
+
+    axios('/foo', {
+      responseType: 'arraybuffer'
+    }).then(data => {
+      response = data;
+    });
+
+    getAjaxRequest().then(request => {
+      request.respondWith({
+        status: 200,
+        // @ts-ignore
+        response: str2ab('Hello world')
+      });
+
+      setTimeout(() => {
+        expect(response.data.byteLength).toBe(22);
+        done();
+      }, 100);
     });
   });
 });

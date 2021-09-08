@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-19 12:03:37
- * @LastEditTime: 2019-09-21 10:59:52
+ * @LastEditTime: 2019-10-15 20:58:07
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig } from '../types/index';
@@ -59,6 +59,8 @@ function deepMergeStrat(val1: any, val2: any): any {
   } else if (isPlainObject(val1)) {
     return deepMerge(val1);
   } else if (typeof val1 !== 'undefined') {
+    return val1;
+  } else {
     return val1;
   }
 }

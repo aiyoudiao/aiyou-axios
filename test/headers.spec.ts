@@ -3,10 +3,10 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-10-10 22:54:16
- * @LastEditTime: 2019-10-10 23:21:28
+ * @LastEditTime: 2019-10-15 20:29:29
  * @LastEditors: ilovejwl
  */
-import axios from '../src/index';
+import axios from 'src/index';
 import { getAjaxRequest } from './helper';
 
 function testHeaderValue(headers: any, key: string, val?: string): void {
@@ -82,7 +82,8 @@ describe('headers', () => {
      */
     return getAjaxRequest().then(request => {
       console.log('响应头：', request.requestHeaders);
-      testHeaderValue(request.requestHeaders, 'Content-Type', undefined);
+      // testHeaderValue(request.requestHeaders, 'Content-Type', undefined);
+      testHeaderValue(request.requestHeaders, 'Content-Type', 'application/x-www-form-urlencoded');
     });
   });
 

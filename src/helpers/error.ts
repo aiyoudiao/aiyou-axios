@@ -3,7 +3,7 @@
  * @version: 1.0.0
  * @Author: ilovejwl
  * @Date: 2019-09-18 15:12:19
- * @LastEditTime: 2019-09-18 15:58:53
+ * @LastEditTime: 2019-10-15 21:53:57
  * @LastEditors: ilovejwl
  */
 import { AxiosRequestConfig, AxiosResponse } from '../types/index';
@@ -15,6 +15,7 @@ export class AxiosError extends Error {
   request?: any;
   response?: AxiosResponse;
 
+  /* istanbul ignore next */
   constructor(
     message: string,
     config: AxiosRequestConfig,
